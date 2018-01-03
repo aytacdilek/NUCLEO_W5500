@@ -12,21 +12,12 @@
 #ifndef __SPIHANDLER_H
 #define __SPIHANDLER_H
 
-#include "stm32f10x_conf.h"
-
-#define STM32_WIZCHIP_USE_DMA
-#ifdef STM32_WIZCHIP_USE_DMA
-#define DMA_Channel_SPI_WIZCHIP_RX    	DMA1_Channel4
-#define DMA_Channel_SPI_WIZCHIP_TX    	DMA1_Channel5
-#define DMA_FLAG_SPI_WIZCHIP_TC_RX    	DMA1_FLAG_TC4
-#define DMA_FLAG_SPI_WIZCHIP_TC_TX    	DMA1_FLAG_TC5
-#endif
 
 
-void  wizchip_write(uint8_t wb);
-uint8_t wizchip_read(void);
-void W5500_Init(void);
-void W5500_SPI_LowLevel_Init(void);
+
+
+
+
 
 #endif
 

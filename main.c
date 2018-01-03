@@ -30,7 +30,6 @@
 #include "rccHandler.h"
 #include "gpioHandler.h"
 #include "adcHandler.h"
-#include "spiHandler.h"
 #include "ConfigData.h"
 #include "ConfigMessage.h"
 #include "timerHandler.h"
@@ -49,6 +48,8 @@
 #else
 #include "dataflash.h"
 #endif
+
+#include "stm32f10x_w5500.h"
 
 ///////////////////////////////////////
 // Debugging Message Printout enable //
@@ -152,8 +153,7 @@ int main(void)
 	USART2_Configuration();
 
 	// W5500 Initialization
-	W5500_SPI_LowLevel_Init();
-	W5500_Init();
+	w5500_init();
 
 	// ADC Initialization
 	adc_dmamulti_init();

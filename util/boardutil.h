@@ -42,9 +42,6 @@
 
 
 // Port B
-//#define RESET_W5500		GPIO_Pin_0	//out
-#define INT_W5500		GPIO_Pin_1	//in
-
 #define CS_EX_Flash		GPIO_Pin_9	//out
 
 // Digital I/O
@@ -228,37 +225,10 @@ typedef enum
 #endif
 
 
-/**
-  * @brief  W5500 SPI Interface pins
-  */
-#define W5500_SPI                       SPI2
-#define W5500_SPI_CLK                   RCC_APB1Periph_SPI2
 
-#define W5500_SPI_SCK_PIN               GPIO_Pin_13                  /* PB.13 */
-#define W5500_SPI_SCK_GPIO_PORT         GPIOB                       /* GPIOB */
-#define W5500_SPI_SCK_GPIO_CLK          RCC_APB2Periph_GPIOB
 
-#define W5500_SPI_MISO_PIN              GPIO_Pin_14                  /* PB.14 */
-#define W5500_SPI_MISO_GPIO_PORT        GPIOB                       /* GPIOB */
-#define W5500_SPI_MISO_GPIO_CLK         RCC_APB2Periph_GPIOB
 
-#define W5500_SPI_MOSI_PIN              GPIO_Pin_15                  /* PB.15 */
-#define W5500_SPI_MOSI_GPIO_PORT        GPIOB                       /* GPIOB */
-#define W5500_SPI_MOSI_GPIO_CLK         RCC_APB2Periph_GPIOB
 
-#define W5500_CS_PIN                    GPIO_Pin_12                  /* PB.12 */
-#define W5500_CS_GPIO_PORT              GPIOB                       /* GPIOB */
-#define W5500_CS_GPIO_CLK               RCC_APB2Periph_GPIOB
-
-#define W5500_DUMMY_BYTE		0xFF
-
-#ifdef CHINA_BOARD
-#define W5500_RESET_PIN                 GPIO_Pin_9   // PB.9 China board
-#else
-#define W5500_RESET_PIN 				GPIO_Pin_0	 // PB.0
-#endif
-
-//#define RESET_W5500                 GPIO_Pin_0   // PB.0
 
 //void RCC_Configuration(void);
 void NVIC_Configuration(void);

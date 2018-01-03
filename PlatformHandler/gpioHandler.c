@@ -49,21 +49,11 @@ void GPIO_Configuration(void)
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 	// Port B Output
-    //GPIO_InitStructure.GPIO_Pin = W5500_RESET_PIN | CS_EX_Flash | W5500_CS_PIN ;
-	GPIO_InitStructure.GPIO_Pin = W5500_RESET_PIN;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    //GPIO_InitStructure.GPIO_Pin = CS_EX_Flash | W5500_CS_PIN ;
 
-    GPIO_SetBits(GPIOB, W5500_RESET_PIN);
+
     //GPIO_SetBits(GPIOB, CS_EX_Flash);
     //GPIO_SetBits(GPIOB, W5500_CS_PIN);
-
-	// Port B input
-    GPIO_InitStructure.GPIO_Pin = INT_W5500;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
 /**

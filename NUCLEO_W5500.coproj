@@ -95,7 +95,6 @@
   </Components>
   <Files>
     <File name="Configuration/ConfigMessage.h" path="Configuration/ConfigMessage.h" type="1"/>
-    <File name="PlatformHandler/spiHandler.c" path="PlatformHandler/spiHandler.c" type="1"/>
     <File name="stm_lib/inc/stm32f10x_can.h" path="stm_lib/inc/stm32f10x_can.h" type="1"/>
     <File name="PlatformHandler/gpioHandler.c" path="PlatformHandler/gpioHandler.c" type="1"/>
     <File name="netutil" path="" type="2"/>
@@ -112,6 +111,7 @@
     <File name="Configuration/ConfigData.c" path="Configuration/ConfigData.c" type="1"/>
     <File name="cmsis_boot/stm32f10x_conf.h" path="cmsis_boot/stm32f10x_conf.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_flash.h" path="stm_lib/inc/stm32f10x_flash.h" type="1"/>
+    <File name="bsp/stm32f10x_bsp_spi.h" path="bsp/stm32f10x_bsp_spi.h" type="1"/>
     <File name="syscalls/syscalls.c" path="syscalls/syscalls.c" type="1"/>
     <File name="stm_lib/inc/stm32f10x_spi.h" path="stm_lib/inc/stm32f10x_spi.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_dma.h" path="stm_lib/inc/stm32f10x_dma.h" type="1"/>
@@ -128,6 +128,7 @@
     <File name="stm_lib/src/stm32f10x_gpio.c" path="stm_lib/src/stm32f10x_gpio.c" type="1"/>
     <File name="Ethernet/W5500/w5500.h" path="Ethernet/W5500/w5500.h" type="1"/>
     <File name="Configuration/ConfigMessage.c" path="Configuration/ConfigMessage.c" type="1"/>
+    <File name="bsp" path="" type="2"/>
     <File name="stm_lib/inc/stm32f10x_usart.h" path="stm_lib/inc/stm32f10x_usart.h" type="1"/>
     <File name="cmsis_boot/system_stm32f10x.c" path="cmsis_boot/system_stm32f10x.c" type="1"/>
     <File name="stdio" path="" type="2"/>
@@ -140,9 +141,11 @@
     <File name="util" path="" type="2"/>
     <File name="Internet/DHCP/dhcp.c" path="Internet/DHCP/dhcp.c" type="1"/>
     <File name="ATcmd/atcmd.h" path="ATcmd/atcmd.h" type="1"/>
+    <File name="bsp/stm32f10x_bsp_spi.c" path="bsp/stm32f10x_bsp_spi.c" type="1"/>
     <File name="PlatformHandler/storageHandler.c" path="PlatformHandler/storageHandler.c" type="1"/>
     <File name="stm_lib/src/stm32f10x_rcc.c" path="stm_lib/src/stm32f10x_rcc.c" type="1"/>
     <File name="ATcmd/library/sockutil.c" path="ATcmd/library/sockutil.c" type="1"/>
+    <File name="drivers" path="" type="2"/>
     <File name="stm_lib/inc/stm32f10x_bkp.h" path="stm_lib/inc/stm32f10x_bkp.h" type="1"/>
     <File name="ATcmd/library/util.h" path="ATcmd/library/util.h" type="1"/>
     <File name="Internet" path="" type="2"/>
@@ -170,6 +173,7 @@
     <File name="Internet/httpServer/httpServer.h" path="Internet/httpServer/httpServer.h" type="1"/>
     <File name="stm_lib/src/stm32f10x_rtc.c" path="stm_lib/src/stm32f10x_rtc.c" type="1"/>
     <File name="main.c" path="main.c" type="1"/>
+    <File name="drivers/stm32f10x_w5500.c" path="drivers/stm32f10x_w5500.c" type="1"/>
     <File name="PlatformHandler/rccHandler.h" path="PlatformHandler/rccHandler.h" type="1"/>
     <File name="PlatformHandler/uartHandler.c" path="PlatformHandler/uartHandler.c" type="1"/>
     <File name="PlatformHandler/adcHandler.c" path="PlatformHandler/adcHandler.c" type="1"/>
@@ -193,6 +197,7 @@
     <File name="Internet/FTPServer" path="" type="2"/>
     <File name="PlatformHandler/userHandler.c" path="PlatformHandler/userHandler.c" type="1"/>
     <File name="ATcmd/cmdrun.h" path="ATcmd/cmdrun.h" type="1"/>
+    <File name="drivers/stm32f10x_w5500.h" path="drivers/stm32f10x_w5500.h" type="1"/>
     <File name="ATcmd/library/at_common.h" path="ATcmd/library/at_common.h" type="1"/>
     <File name="stm_lib/src/stm32f10x_usart.c" path="stm_lib/src/stm32f10x_usart.c" type="1"/>
     <File name="Ethernet/socket.h" path="Ethernet/socket.h" type="1"/>
@@ -216,7 +221,6 @@
     <File name="Internet/FTPServer/stdio_private.h" path="Internet/FTPServer/stdio_private.h" type="1"/>
     <File name="util/boardutil.c" path="util/boardutil.c" type="1"/>
     <File name="PlatformHandler/ring_buffer.c" path="PlatformHandler/ring_buffer.c" type="1"/>
-    <File name="PlatformHandler/spiHandler.h" path="PlatformHandler/spiHandler.h" type="1"/>
     <File name="stm32f10x_it.c" path="stm32f10x_it.c" type="1"/>
     <File name="ATcmd/library/sockutil.h" path="ATcmd/library/sockutil.h" type="1"/>
     <File name="util/common.h" path="util/common.h" type="1"/>
