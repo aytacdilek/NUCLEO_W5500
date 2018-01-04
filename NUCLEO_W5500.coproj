@@ -119,7 +119,6 @@
     <File name="stm_lib/inc/stm32f10x_iwdg.h" path="stm_lib/inc/stm32f10x_iwdg.h" type="1"/>
     <File name="ATcmd/library" path="" type="2"/>
     <File name="PlatformHandler/extiHandler.h" path="PlatformHandler/extiHandler.h" type="1"/>
-    <File name="util/diskio.c" path="util/diskio.c" type="1"/>
     <File name="Internet/httpServer/dataflash.h" path="Internet/httpServer/dataflash.h" type="1"/>
     <File name="Configuration/ConfigData.h" path="Configuration/ConfigData.h" type="1"/>
     <File name="stdio/printf.c" path="stdio/printf.c" type="1"/>
@@ -143,6 +142,7 @@
     <File name="ATcmd/atcmd.h" path="ATcmd/atcmd.h" type="1"/>
     <File name="bsp/stm32f10x_bsp_spi.c" path="bsp/stm32f10x_bsp_spi.c" type="1"/>
     <File name="PlatformHandler/storageHandler.c" path="PlatformHandler/storageHandler.c" type="1"/>
+    <File name="PlatformHandler/FatFs/diskio.c" path="PlatformHandler/FatFs/diskio.c" type="1"/>
     <File name="stm_lib/src/stm32f10x_rcc.c" path="stm_lib/src/stm32f10x_rcc.c" type="1"/>
     <File name="ATcmd/library/sockutil.c" path="ATcmd/library/sockutil.c" type="1"/>
     <File name="drivers" path="" type="2"/>
