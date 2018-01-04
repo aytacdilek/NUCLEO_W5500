@@ -1,33 +1,18 @@
 /*******************************************************************************
- * @File:			stm32f10x_bsp_spi.c
+ * @File:			stm32f10x_w5500.c
  * @Author:			Aytac Dilek
  * @email:			aytacdilek@gmail.com
  * @Web:
- * @Date:			03.16.2016
- * @Description:	STM32F10x library for
+ * @Date:			03.01.2018
+ * @Description:	STM32F10x library for w5500 ethernet controller
  * @Version:		1.0
  * @Platform:		NUCLEO-F103RB
  * @CPU:			STM32F103RB
  * @IDE:			CooCox CoIDE 1.7.8
- * @GCC:			4.8 2014q2
+ * @GCC:			7.2.1 2017q4
  * @Module:			spi
- * @Function:		Read shunt, current and power readings
+ * @Function:		Ethernet Controller
  * @Notes:			None
- * @Copyright:		Copyright (C) Aytac Dilek, 2016
- * 					This program is free software: you can redistribute it
- * 					and/or modify it under the terms of the GNU General Public
- * 					License as published by the Free Software Foundation, either
- * 					version 3 of the License, or any later version.
- *
- * 					This program is distributed in the hope that it will be
- * 					useful, but WITHOUT ANY WARRANTY; without even the implied
- * 					warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * 					PURPOSE.  See the GNU General Public License for more
- * 					details.
- *
- * 					You should have received a copy of the GNU General Public
- * 					License along with this program.  If not,
- * 					see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
 /* Includes *******************************************************************/
@@ -84,7 +69,7 @@ uint8_t wizchip_read(void)
 
 /*******************************************************************************
 * Function:		w5500_init
-* Description:	Initializes the peripherals used by the W5500 driver.
+* Description:	SPI read and write a single byte (to return after sending the data read in this Newsletter)
 * Input:		None
 * Output:		None
 * Return:		None

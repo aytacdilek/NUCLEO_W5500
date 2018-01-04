@@ -1,6 +1,6 @@
 /*******************************************************************************
- * @File:			stm32f10x_bsp_spi.h
- * @Description:	None
+ * @File:			stm32f10x_w5500.h
+ * @Description:	w5500 ethernet controller driver file
  * @Author:			Aytac Dilek
  * @Date:			05.09.2016
  ******************************************************************************
@@ -10,13 +10,13 @@
 #ifndef __STM32F10X_W5500_H
 #define __STM32F10X_W5500_H
 
-#include "stm32f10x_conf.h"
-#include <stdio.h>
-#include "stm32f10x_conf.h"
+
+/* Includes *******************************************************************/
 #include "stm32f10x.h"
-#include "spiHandler.h"
-#include "boardutil.h"
+#include "stm32f10x_conf.h"
 #include "wizchip_conf.h"
+
+#include <stdio.h>
 
 
 

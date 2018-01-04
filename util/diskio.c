@@ -12,6 +12,7 @@
 
 #include "diskio.h"
 #include "mmc_sd.h"
+#include "stm32f10x_sd.h"
 #include "dataflash.h"
 #include "ffconf.h"
 #include "boardutil.h"
@@ -228,7 +229,7 @@ DRESULT disk_ioctl (
 		switch(cmd)
 		{
 		case CTRL_SYNC:
-			MSD_CS_ENABLE();
+			SD_CS_ENABLE();
 			if(SD_WaitReady()==0)
 			{
 				res = RES_OK;
@@ -237,7 +238,7 @@ DRESULT disk_ioctl (
 			{
 				res = RES_ERROR;
 			}
-			MSD_CS_DISABLE();
+			SD_CS_DISABLE();
 			break;
 
 		case GET_BLOCK_SIZE:

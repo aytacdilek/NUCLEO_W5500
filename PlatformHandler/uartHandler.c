@@ -344,10 +344,10 @@ void Chip_UART_IRQRBHandler(USART_TypeDef *pUART, RINGBUFF_T *pRXRB, RINGBUFF_T 
 	}
 }
 
-void USART2_IRQHandler(void)
-{
-	Chip_UART_IRQRBHandler(USART2, &rxring2, &txring2);
-}
+//void USART2_IRQHandler(void)
+//{
+//	Chip_UART_IRQRBHandler(USART2, &rxring2, &txring2);
+//}
 
 void USART2_Configuration(void)
 {

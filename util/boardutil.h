@@ -18,7 +18,7 @@
 #ifdef F_SPI_FLASH
 	//#define F_SPI_FLASH_ONLY
 #endif
-//#define _FS_DEBUG_
+
 
 
 #define DELAY_COUNT    0xEFFFF  // just for test
@@ -244,8 +244,8 @@ uint8 get_LED_Status(Led_TypeDef Led);
 void myprintf(char *fmt, ...);
 
 void Delay(volatile uint32_t nCount);
-void delay_us (const uint32_t usec);
-void delay_ms (const uint32_t msec);
+//void delay_us (const uint32_t usec);
+//void delay_ms (const uint32_t msec);
 #if defined(FACTORY_FW)
 int check_factory_flag (void);
 void check_factory_uart1 (void);

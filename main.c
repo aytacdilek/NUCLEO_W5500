@@ -50,6 +50,7 @@
 #endif
 
 #include "stm32f10x_w5500.h"
+#include "stm32f10x_sd.h"
 
 ///////////////////////////////////////
 // Debugging Message Printout enable //
@@ -120,7 +121,7 @@ int main(void)
 	// MCU Initialization
 	RCC_Configuration();
 	NVIC_Configuration();
-	Timer_Configuration();
+//	Timer_Configuration();
 
 	// LED Initialization
 	LED_Init(LED1);
@@ -149,8 +150,9 @@ int main(void)
 	load_S2E_Packet_from_storage();
 
 	// UART Initialization
-	USART1_Configuration();
-	USART2_Configuration();
+//	USART1_Configuration();
+//	USART2_Configuration();
+	usart2_init();
 
 	// W5500 Initialization
 	w5500_init();
@@ -347,7 +349,7 @@ static void display_SDcard_Info(uint8_t mount_ret)
 #if 1
 	if(_MAX_SS == 512)
 	{
-		getMountedMemorySize(mount_ret, &totalSize, &availableSize);
+		sd_getMountedMemorySize(mount_ret, &totalSize, &availableSize);
 		printf(" - Available Memory Size : %ld kB / %ld kB ( %ld kB is used )\r\n", availableSize, totalSize, (totalSize - availableSize));
 	}
 	printf("\r\n");
