@@ -2563,7 +2563,8 @@ FRESULT f_mount (
 	}
 	FatFs[vol] = fs;					/* Register new fs object */
 
-	if (!fs || opt != 1) return FR_OK;	/* Do not mount now, it will be mounted later */
+	if (!fs || opt != 1)
+		return FR_OK;	/* Do not mount now, it will be mounted later */
 
 	res = find_volume(&fs, &path, 0);	/* Force mounted the volume */
 	LEAVE_FF(fs, res);

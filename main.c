@@ -161,6 +161,27 @@ int main(void)
 //	USART2_Configuration();
 	usart2_init();
 
+
+
+
+	/* Test SD */
+	FRESULT res;
+	FIL fsrc;					/* File objects */
+	char *filename = "LOGFILE.TXT";
+
+	mmc_mount();
+
+	/*Step4*/
+	/* Open  the file for write */
+	res = f_open(&fsrc, filename,  FA_CREATE_ALWAYS | FA_WRITE);
+	if (res != FR_OK){
+		printf("Error. Cannot create the file\r\n");
+		while(1);
+	}
+
+
+	while(1);
+
 	// W5500 Initialization
 	w5500_init();
 
