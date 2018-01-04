@@ -43,6 +43,7 @@
 
 #ifdef _USE_SDCARD_
 #include "ff.h"
+#include "diskio.h"
 #include "ffconf.h"
 #else
 #include "dataflash.h"
@@ -104,6 +105,7 @@ wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef},
 void network_config(void);
 void network_display(void);
 
+FATFS fatfs;				/* File system specific */
 
 /*****************************************************************************
  * Public functions
@@ -160,27 +162,6 @@ int main(void)
 //	USART1_Configuration();
 //	USART2_Configuration();
 	usart2_init();
-
-
-
-
-	/* Test SD */
-	FRESULT res;
-	FIL fsrc;					/* File objects */
-	char *filename = "LOGFILE.TXT";
-
-	mmc_mount();
-
-	/*Step4*/
-	/* Open  the file for write */
-	res = f_open(&fsrc, filename,  FA_CREATE_ALWAYS | FA_WRITE);
-	if (res != FR_OK){
-		printf("Error. Cannot create the file\r\n");
-		while(1);
-	}
-
-
-	while(1);
 
 	// W5500 Initialization
 	w5500_init();
@@ -268,8 +249,43 @@ int main(void)
 #endif
 
 #ifdef _USE_SDCARD_
+	DSTATUS resCard;			/* SDcard status */
 	// SD card Initialization
-	ret = mmc_mount();
+//	ret = mmc_mount();
+	/* Step2 */
+	/* Detect micro-SD */
+	while(1){
+		resCard = disk_initialize(0);       /*Check micro-SD card status */
+
+		switch(resCard){
+		case STA_NOINIT:                    /* Drive not initialized */
+			break;
+		case STA_NODISK:                    /* No medium in the drive */
+			printf("NO Disk\r\n");
+			break;
+		case STA_PROTECT:                   /* Write protected */
+			break;
+		default:
+			break;
+		}
+
+		if (!resCard){
+#if defined(DEBUG_ENABLE_USART)
+			printf("Disk Initialized\r\n");
+#endif
+			break;                /* Drive initialized. */
+		}
+		delay_ms(1);
+	}
+
+	/* Step3 */
+	/* Initialize filesystem */
+	if (f_mount(0, &fatfs) != FR_OK){
+		/* Error.No micro-SD with FAT32 is present */
+		printf("Error.No micro-SD with FAT32 is present\r\n");
+		while(1);
+	}
+
 	if(ret <= 0)
 	{
 #ifdef _MAIN_DEBUG_
@@ -282,7 +298,7 @@ int main(void)
 	{
 		LED_On(LED1);
 #ifdef _MAIN_DEBUG_
-		sd_displayCardInfo(ret);
+//		sd_displayCardInfo(ret);
 #endif
 	}
 

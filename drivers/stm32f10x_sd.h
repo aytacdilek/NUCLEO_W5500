@@ -1,222 +1,199 @@
 /*******************************************************************************
- * @File:			stm32f10x_sd.h
- * @Description:	SD driver file
+ * @File:			stm32f10x_microsd.h
+ * @Description:	The SPI SD Card application function
  * @Author:			Aytac Dilek
- * @Date:			02.01.2018
+ * @Date:			03.16.2016
  ******************************************************************************
  * @Release Notes:
  ******************************************************************************/
 
-#ifndef __STM32F10X_SD_H
-#define __STM32F10X_SD_H
+#ifndef __STM32F10X_MICROSD_H
+#define __STM32F10X_MICROSD_H
 
 /* Includes *******************************************************************/
 #include "stm32f10x.h"
-#include "stm32f10x_conf.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_rcc.h"
+#include "stm32f10x_spi.h"
 
-#include "stm32f10x_bsp_delay.h"
-
-#include "ff.h"
-#include "diskio.h"
-
-#include "dataflash.h"
-
-#include <stdio.h> // for debugging
-
+#include <stdio.h>
 
 /* Defines ********************************************************************/
-#define SD_ENABLE_SPI1			1
-#define SD_ENABLE_SPI2			2
+#define MICROSD_USE_SPI1		1
+//#define MICROSD_USE_SPI2		2
+//#define PRINT_INFO  1
 
-#if defined(SD_ENABLE_SPI1)
-	#define SD_SPI_PORT					SPI1
-	#define SD_SPI_CLOCK				RCC_APB2Periph_SPI1
+#if defined(MICROSD_USE_SPI1)
+	#define MICROSD_MOSI_PORT		GPIOA					// D11
+	#define MICROSD_MOSI_PIN		GPIO_Pin_7
+	#define MICROSD_MOSI_CLOCK		RCC_APB2Periph_GPIOA
 
-	#define SD_SPI_SCK_PIN				GPIO_Pin_5                  /* PA.5 */
-	#define SD_SPI_SCK_GPIO_PORT		GPIOA                       /* GPIOA */
-	#define SD_SPI_SCK_GPIO_CLK			RCC_APB2Periph_GPIOA
+	#define MICROSD_MISO_PORT		GPIOA					// D12
+	#define MICROSD_MISO_PIN		GPIO_Pin_6
+	#define MICROSD_MISO_CLOCK		RCC_APB2Periph_GPIOA
 
-	#define SD_SPI_MISO_PIN				GPIO_Pin_6                  /* PA.6 */
-	#define SD_SPI_MISO_GPIO_PORT		GPIOA                       /* GPIOA */
-	#define SD_SPI_MISO_GPIO_CLK		RCC_APB2Periph_GPIOA
+	#define MICROSD_SCK_PORT		GPIOA					// D13
+	#define MICROSD_SCK_PIN			GPIO_Pin_5
+	#define MICROSD_SCK_CLOCK		RCC_APB2Periph_GPIOA
 
-	#define SD_SPI_MOSI_PIN				GPIO_Pin_7                  /* PA.7 */
-	#define SD_SPI_MOSI_GPIO_PORT		GPIOA                       /* GPIOA */
-	#define SD_SPI_MOSI_GPIO_CLK		RCC_APB2Periph_GPIOA
+	#define MICROSD_CS_PORT			GPIOB					// D4
+	#define MICROSD_CS_PIN			GPIO_Pin_5
+	#define MICROSD_CS_CLOCK		RCC_APB2Periph_GPIOB
 
-	#define SD_SPI_CS_PIN				GPIO_Pin_5                  /* PB.6 */
-	#define SD_SPI_CS_GPIO_PORT			GPIOB                       /* GPIOB */
-	#define SD_SPI_CS_GPIO_CLK			RCC_APB2Periph_GPIOB
-#elif defined(SD_ENABLE_SPI2)
-	#define SD_SPI_PORT					SPI2
-	#define SD_SPI_CLOCK				RCC_APB1Periph_SPI2
+	#define MICROSD_CD_PORT			GPIOA
+	#define MICROSD_CD_PIN			GPIO_Pin_3
+	#define MICROSD_CD_CLOCK		RCC_APB2Periph_GPIOA
 
-	#define SD_SPI_SCK_PIN				GPIO_Pin_13                  /* PA.5 */
-	#define SD_SPI_SCK_GPIO_PORT		GPIOB                       /* GPIOA */
-	#define SD_SPI_SCK_GPIO_CLK			RCC_APB2Periph_GPIOB
+	#define MICROSD_SPI_PER			SPI1
+	#define MICROSD_SPI_CLOCK		RCC_APB2Periph_SPI1
+#elif defined(MICROSD_USE_SPI2)
+	#define MICROSD_MOSI_PORT		GPIOB					// D11
+	#define MICROSD_MOSI_PIN		GPIO_Pin_15
+	#define MICROSD_MOSI_CLOCK		RCC_APB2Periph_GPIOB
 
-	#define SD_SPI_MISO_PIN				GPIO_Pin_14                  /* PA.6 */
-	#define SD_SPI_MISO_GPIO_PORT		GPIOB                       /* GPIOA */
-	#define SD_SPI_MISO_GPIO_CLK		RCC_APB2Periph_GPIOB
+	#define MICROSD_MISO_PORT		GPIOB					// D12
+	#define MICROSD_MISO_PIN		GPIO_Pin_14
+	#define MICROSD_MISO_CLOCK		RCC_APB2Periph_GPIOB
 
-	#define SD_SPI_MOSI_PIN				GPIO_Pin_15                  /* PA.7 */
-	#define SD_SPI_MOSI_GPIO_PORT		GPIOB                       /* GPIOA */
-	#define SD_SPI_MOSI_GPIO_CLK		RCC_APB2Periph_GPIOB
+	#define MICROSD_SCK_PORT		GPIOB					// D13
+	#define MICROSD_SCK_PIN			GPIO_Pin_13
+	#define MICROSD_SCK_CLOCK		RCC_APB2Periph_GPIOB
 
-	#define SD_SPI_CS_PIN				GPIO_Pin_5                  /* PB.6 */
-	#define SD_SPI_CS_GPIO_PORT			GPIOB                       /* GPIOB */
-	#define SD_SPI_CS_GPIO_CLK			RCC_APB2Periph_GPIOB
+	#define MICROSD_CS_PORT			GPIOB					// D4
+	#define MICROSD_CS_PIN			GPIO_Pin_1
+	#define MICROSD_CS_CLOCK		RCC_APB2Periph_GPIOB
+
+	#define MICROSD_CD_PORT			GPIOA
+	#define MICROSD_CD_PIN			GPIO_Pin_3
+	#define MICROSD_CD_CLOCK		RCC_APB2Periph_GPIOA
+
+	#define MICROSD_SPI_PER			SPI2
+	#define MICROSD_SPI_CLOCK		RCC_APB1Periph_SPI2
 #endif
 
-#define SPI_SPEED_2   0
-#define SPI_SPEED_4   1
-#define SPI_SPEED_8   2
-#define SPI_SPEED_16  3
-#define SPI_SPEED_256 4
+#define CARDTYPE_MMC     	     0x00
+#define CARDTYPE_SDV1      	     0x01
+#define CARDTYPE_SDV2      	     0x02
+#define CARDTYPE_SDV2HC    	     0x04
 
-// for vs1003b
-#define SPI_SPEED_LOW   0
-#define SPI_SPEED_HIGH  1
+#define DUMMY_BYTE				 0xFF
+#define MSD_BLOCKSIZE			 512
 
-//#define STM32_SD_USE_DMA
-//#define _FS_DEBUG_
+/* SD/MMC command list - SPI mode */
+#define CMD0                     0       /* Reset */
+#define CMD1                     1       /* Send Operator Condition - SEND_OP_COND */
+#define CMD8                     8       /* Send Interface Condition - SEND_IF_COND	*/
+#define CMD9                     9       /* Read CSD */
+#define CMD10                    10      /* Read CID */
+#define CMD12                    12      /* Stop data transmit */
+#define CMD16                    16      /* Set block size, should return 0x00 */
+#define CMD17                    17      /* Read single block */
+#define CMD18                    18      /* Read multi block */
+#define ACMD23                   23      /* Prepare erase N-blokcs before multi block write */
+#define CMD24                    24      /* Write single block */
+#define CMD25                    25      /* Write multi block */
+#define ACMD41                   41      /* should return 0x00 */
+#define CMD55                    55      /* should return 0x01 */
+#define CMD58                    58      /* Read OCR */
+#define CMD59                    59      /* CRC disable/enbale, should return 0x00 */
 
-
-#ifdef STM32_SD_USE_DMA
-#define DMA_Channel_SPI_SD_RX    DMA1_Channel4
-#define DMA_Channel_SPI_SD_TX    DMA1_Channel5
-#define DMA_FLAG_SPI_SD_TC_RX    DMA1_FLAG_TC4
-#define DMA_FLAG_SPI_SD_TC_TX    DMA1_FLAG_TC5
-//#define GPIO_SPI_SD              GPIOB
-//#define GPIO_Pin_SPI_SD_SCK      GPIO_Pin_13
-//#define GPIO_Pin_SPI_SD_MISO     GPIO_Pin_14
-//#define GPIO_Pin_SPI_SD_MOSI     GPIO_Pin_15
-//#define RCC_APBPeriphClockCmd_SPI_SD  RCC_APB1PeriphClockCmd
-//#define RCC_APBPeriph_SPI_SD     RCC_APB1Periph_SPI2
-#endif
-
-#define GO_IDLE_STATE			0
-#define SEND_OP_COND			1
-#define SEND_IF_COND			8
-#define SET_BLOCKLEN			16
-#define READ_BLOCK				17
-#define WRITE_BLOCK				24
-#define APP_CMD					55
-#define READ_OCR				58
-#define SD_SEND_OP_COND			(0x40|41)
-
-// SD data transmission whether to release the bus after the end of the macro definition
-#define NO_RELEASE 0
-#define RELEASE 1
-
-// SD Card Type Definition
-#define SD_TYPE_MMC 1
-#define SD_TYPE_V1 2
-#define SD_TYPE_V2 3
-#define SD_TYPE_V2HC 4
-
-// SD Card instruction sheet
-#define CMD0 0 // Card Reset
-#define CMD1 1
-#define CMD9 9 // command 9, CSD data read
-#define CMD10 10 // Command 10, read CID data
-#define CMD12 12 // command 12, to stop data transmission
-#define CMD16 16 // Command 16, set SectorSize should return 0x00
-#define CMD17 17 // Command 17, read sector
-#define CMD18 18 // Command 18, read Multi sector
-#define ACMD23 23 // Command 23, set the multi-sector erase writing in advance of a block N
-#define CMD24 24 // Command 24, write sector
-#define CMD25 25 // Command 25, write Multi sector
-#define ACMD41 41 // command to 41, should return 0x00
-#define CMD55 55 // command to 55, should return 0x01
-#define CMD58 58 // Command 58, read OCR information
-#define CMD59 59 // command to 59, enables / disables the CRC, should return 0x00
-
-// Write data to respond to the word meaning
-#define MSD_DATA_OK 0x05
-#define MSD_DATA_CRC_ERROR 0x0B
-#define MSD_DATA_WRITE_ERROR 0x0D
-#define MSD_DATA_OTHER_ERROR 0xFF
-
-// SD card labeled word response
-#define MSD_RESPONSE_NO_ERROR 0x00
-#define MSD_IN_IDLE_STATE 0x01
-#define MSD_ERASE_RESET 0x02
-#define MSD_ILLEGAL_COMMAND 0x04
-#define MSD_COM_CRC_ERROR 0x08
-#define MSD_ERASE_SEQUENCE_ERROR 0x10
-#define MSD_ADDRESS_ERROR 0x20
-#define MSD_PARAMETER_ERROR 0x40
-#define MSD_RESPONSE_FAILURE 0xFF
-
-#define SD_MEMORY_RETRY_COUNT 255//400
 
 
 /* Macro Definitions **********************************************************/
-// SD Card Selection; CS control
-#define SD_CS_ENABLE()     		GPIO_ResetBits(SD_SPI_CS_GPIO_PORT, SD_SPI_CS_PIN)
-#define SD_CS_DISABLE()     	GPIO_SetBits(SD_SPI_CS_GPIO_PORT, SD_SPI_CS_PIN)
+#define _card_enable()      	GPIO_ResetBits(MICROSD_CS_PORT, MICROSD_CS_PIN)
+#define _card_disable()     	GPIO_SetBits(MICROSD_CS_PORT, MICROSD_CS_PIN)
+#define _card_power_on()
+#define _card_insert()       	GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_0)
 
 
-/* Enumerations ***************************************************************/
-typedef enum {
-	NO_CARD,
-	CARD_MMC,
-	CARD_SD,
-	CARD_SD2,
-	CARD_SDHC,
-	SPI_FLASHM
-} MemoryType_Enum;
 
+/* Private typedef -----------------------------------------------------------*/
+enum _CD_HOLD{
+	HOLD = 0,
+	RELEASE = 1,
+};
 
 
 
 /* Structures *****************************************************************/
+typedef struct{               /* Card Specific Data */
+	vu8  CSDStruct;            /* CSD structure */
+	vu8  SysSpecVersion;       /* System specification version */
+	vu8  Reserved1;            /* Reserved */
+	vu8  TAAC;                 /* Data read access-time 1 */
+	vu8  NSAC;                 /* Data read access-time 2 in CLK cycles */
+	vu8  MaxBusClkFrec;        /* Max. bus clock frequency */
+	vu16 CardComdClasses;      /* Card command classes */
+	vu8  RdBlockLen;           /* Max. read data block length */
+	vu8  PartBlockRead;        /* Partial blocks for read allowed */
+	vu8  WrBlockMisalign;      /* Write block misalignment */
+	vu8  RdBlockMisalign;      /* Read block misalignment */
+	vu8  DSRImpl;              /* DSR implemented */
+	vu8  Reserved2;            /* Reserved */
+	vu32 DeviceSize;           /* Device Size */
+	vu8  MaxRdCurrentVDDMin;   /* Max. read current @ VDD min */
+	vu8  MaxRdCurrentVDDMax;   /* Max. read current @ VDD max */
+	vu8  MaxWrCurrentVDDMin;   /* Max. write current @ VDD min */
+	vu8  MaxWrCurrentVDDMax;   /* Max. write current @ VDD max */
+	vu8  DeviceSizeMul;        /* Device size multiplier */
+	vu8  EraseGrSize;          /* Erase group size */
+	vu8  EraseGrMul;           /* Erase group size multiplier */
+	vu8  WrProtectGrSize;      /* Write protect group size */
+	vu8  WrProtectGrEnable;    /* Write protect group enable */
+	vu8  ManDeflECC;           /* Manufacturer default ECC */
+	vu8  WrSpeedFact;          /* Write speed factor */
+	vu8  MaxWrBlockLen;        /* Max. write data block length */
+	vu8  WriteBlockPaPartial;  /* Partial blocks for write allowed */
+	vu8  Reserved3;            /* Reserded */
+	vu8  ContentProtectAppli;  /* Content protection application */
+	vu8  FileFormatGrouop;     /* File format group */
+	vu8  CopyFlag;             /* Copy flag (OTP) */
+	vu8  PermWrProtect;        /* Permanent write protection */
+	vu8  TempWrProtect;        /* Temporary write protection */
+	vu8  FileFormat;           /* File Format */
+	vu8  ECC;                  /* ECC code */
+	vu8  CSD_CRC;              /* CSD CRC */
+	vu8  Reserved4;            /* always 1*/
+}MSD_CSD;
+
+typedef struct{				 /*Card Identification Data*/
+	vu8  ManufacturerID;       /* ManufacturerID */
+	vu16 OEM_AppliID;          /* OEM/Application ID */
+	vu32 ProdName1;            /* Product Name part1 */
+	vu8  ProdName2;            /* Product Name part2*/
+	vu8  ProdRev;              /* Product Revision */
+	vu32 ProdSN;               /* Product Serial Number */
+	vu8  Reserved1;            /* Reserved1 */
+	vu16 ManufactDate;         /* Manufacturing Date */
+	vu8  CID_CRC;              /* CID CRC */
+	vu8  Reserved2;            /* always 1 */
+}MSD_CID;
+
+typedef struct{
+	MSD_CSD CSD;
+	MSD_CID CID;
+	u32 Capacity;              /* Card Capacity */
+	u32 BlockSize;             /* Card Block Size */
+	u16 RCA;
+	u8 CardType;
+	u32 SpaceTotal;            /* Total space size in file system */
+	u32 SpaceFree;      	     /* Free space size in file system */
+}MSD_CARDINFO, *PMSD_CARDINFO;
 
 
-
-/* Global Variables ***********************************************************/
-FATFS Fatfs[1];
-extern u8 SD_Type; // SD card type
-extern int g_mkfs_done;
-extern int g_sdcard_done;
+/* Private variables ---------------------------------------------------------*/
+MSD_CARDINFO CardInfo;
 
 
 /* Global Functions ***********************************************************/
-MemoryType_Enum mmc_mount(void);
-uint8_t flash_mount();
-
-/* Physical Level Functions */
-uint8_t sd_init(void);
-void sd_setSpiSpeed(uint8_t speed);
-uint8_t sd_readWriteByte(uint8_t tx_data);
-
-/* SD Level Functions */
-FRESULT sd_getMountedMemorySize(uint8_t mount_ret, uint32_t * totalSize, uint32_t * availableSize);
-void sd_displayCardInfo(uint8_t mount_ret);
+int microsd_init(void);
+int microsd_getCardInfo(PMSD_CARDINFO cardinfo);
+int microsd_readSingleBlock(uint32_t sector, uint8_t *buffer);
+int microsd_readMultiBlock(uint32_t sector, uint8_t *buffer, uint32_t NbrOfSector);
+int microsd_writeSingleBlock(uint32_t sector, uc8 *buffer);
+int microsd_writeMultiBlock(uint32_t sector, uc8 *buffer, uint32_t NbrOfSector);
+void microsd_test(void);
 
 
-// Function state area
-void bsp_set_spi1_speed_mmcsd(u16 prescaler);
-u8 SD_WaitReady (void); // SD card ready to wait
-u8 SD_SendCommand (u8 cmd, u32 arg, u8 crc); // SD card to send a command
-u8 SD_SendCommand_NoDeassert (u8 cmd, u32 arg, u8 crc);
-u8 SD_Idle_Sta (void); // set the SD card into suspend mode
 
-u8 SD_ReceiveData (u8 * data, u16 len, u8 release); // SD card reader data
-u8 SD_GetCID (u8 * cid_data); // reading SD card CID
-u8 SD_GetCSD (u8 * csd_data); // reading SD card CSD
-u32 SD_GetCapacity (void); // check SD card capacity
-
-// USB SD card reader operation function
-u8 MSD_WriteBuffer (u8 * pBuffer, u32 WriteAddr, u32 NumByteToWrite);
-u8 MSD_ReadBuffer (u8 * pBuffer, u32 ReadAddr, u32 NumByteToRead);
-
-u8 SD_ReadSingleBlock (u32 sector, u8 * buffer); // read a sector
-u8 SD_WriteSingleBlock (u32 sector, const u8 * buffer); // write a sector
-u8 SD_ReadMultiBlock (u32 sector, u8 * buffer, u8 count); // read multiple sector
-u8 SD_WriteMultiBlock (u32 sector, const u8 * data, u8 count); // write multiple sector
-u8 SD_Read_Bytes (unsigned long address, unsigned char * buf, unsigned int offset, unsigned int bytes); // read a byte
-u8 SD_WaitReady(void);
-
-#endif	// __STM32F10X_SD_H
+#endif	// __STM32F10X_MICROSD_H

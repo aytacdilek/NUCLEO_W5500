@@ -582,7 +582,7 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 					content_found = 1; // file open succeed
 
 					file_len = fs.fsize;
-					content_addr = fs.sclust;
+					content_addr = fs.org_clust;
 				}
 				else
 				{
