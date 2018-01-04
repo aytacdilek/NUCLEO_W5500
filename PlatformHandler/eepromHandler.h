@@ -4,7 +4,7 @@
 
 #include "stm32f10x_conf.h"
 
-#define EEPROM_ENABLE
+//#define EEPROM_ENABLE
 #if defined(EEPROM_ENABLE)
 	#define EEPROM_ENABLE_BYI2CPERI
 	#if !defined(EEPROM_ENABLE_BYI2CPERI)

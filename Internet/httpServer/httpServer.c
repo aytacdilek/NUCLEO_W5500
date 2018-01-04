@@ -106,8 +106,10 @@ void httpServer_init(uint8_t * tx_buf, uint8_t * rx_buf, uint8_t cnt, uint8_t * 
 void reg_httpServer_cbfunc(void(*mcu_reset)(void), void(*wdt_reset)(void))
 {
 	// Callback: HW Reset and WDT reset function for each MCU platforms
-	if(mcu_reset) HTTPServer_ReStart = mcu_reset;
-	if(wdt_reset) HTTPServer_WDT_Reset = wdt_reset;
+	if(mcu_reset)
+		HTTPServer_ReStart = mcu_reset;
+	if(wdt_reset)
+		HTTPServer_WDT_Reset = wdt_reset;
 }
 
 

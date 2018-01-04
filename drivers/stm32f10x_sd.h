@@ -79,7 +79,7 @@
 #define SPI_SPEED_HIGH  1
 
 //#define STM32_SD_USE_DMA
-#define _FS_DEBUG_
+//#define _FS_DEBUG_
 
 
 #ifdef STM32_SD_USE_DMA
@@ -193,6 +193,7 @@ uint8_t sd_readWriteByte(uint8_t tx_data);
 
 /* SD Level Functions */
 FRESULT sd_getMountedMemorySize(uint8_t mount_ret, uint32_t * totalSize, uint32_t * availableSize);
+void sd_displayCardInfo(uint8_t mount_ret);
 
 
 // Function state area

@@ -31,11 +31,11 @@ void set_S2E_Packet_to_factory_value()
 
 	s2e_packet.network_info_common.local_ip[0] = 192;
 	s2e_packet.network_info_common.local_ip[1] = 168;
-	s2e_packet.network_info_common.local_ip[2] = 11;
+	s2e_packet.network_info_common.local_ip[2] = 1;
 	s2e_packet.network_info_common.local_ip[3] = 100;
 	s2e_packet.network_info_common.gateway[0] = 192;
 	s2e_packet.network_info_common.gateway[1] = 168;
-	s2e_packet.network_info_common.gateway[2] = 11;
+	s2e_packet.network_info_common.gateway[2] = 1;
 	s2e_packet.network_info_common.gateway[3] = 1;
 	s2e_packet.network_info_common.subnet[0] = 255;
 	s2e_packet.network_info_common.subnet[1] = 255;

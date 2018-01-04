@@ -43,7 +43,6 @@
 
 #ifdef _USE_SDCARD_
 #include "ff.h"
-#include "mmcHandler.h"
 #include "ffconf.h"
 #else
 #include "dataflash.h"
@@ -93,10 +92,18 @@ uint8_t socknumlist[] = {2, 3, 4, 5, 6, 7};
 int g_mkfs_done = 0;
 int g_sdcard_done = 0;
 
-/*****************************************************************************
- * Private functions
- ****************************************************************************/
-static void display_SDcard_Info(uint8_t mount_ret);
+/* Network Configuration */
+wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef},
+                            .ip = {192, 168, 0, 100},
+                            .sn = {255, 255, 255, 0},
+                            .gw = {192, 168, 0, 1},
+                            .dns = {8, 8, 8, 8},
+                            .dhcp = NETINFO_STATIC };
+
+
+void network_config(void);
+void network_display(void);
+
 
 /*****************************************************************************
  * Public functions
@@ -130,7 +137,7 @@ int main(void)
 	LED_Off(LED2);
 
 	g_sdcard_done = 0;
-	g_spiflash_flag = 0;
+//	g_spiflash_flag = 0;
 
 
 #if defined(MULTIFLASH_ENABLE)
@@ -147,7 +154,7 @@ int main(void)
 #endif
 
 	// Load the Configuration data
-	load_S2E_Packet_from_storage();
+//	load_S2E_Packet_from_storage();
 
 	// UART Initialization
 //	USART1_Configuration();
@@ -157,8 +164,11 @@ int main(void)
 	// W5500 Initialization
 	w5500_init();
 
+	network_config();
+//	network_display();
+
 	// ADC Initialization
-	adc_dmamulti_init();
+//	adc_dmamulti_init();
 
 #ifdef _MAIN_DEBUG_
     printf("\r\n=======================================\r\n");
@@ -167,58 +177,58 @@ int main(void)
 	printf(" Firmware Version %d.%d.%d\r\n", MAJOR_VER, MINOR_VER, MAINTENANCE_VER);
 	printf("=======================================\r\n");
 
-	printf(" # Device Name : %s\r\n\r\n", value->module_name);
+//	printf(" # Device Name : %s\r\n\r\n", value->module_name);
 #endif
 
-	// Initialize Network Information
-	if(value->options.dhcp_use)		// DHCP
-	{
-		uint32_t ret;
-		uint8_t dhcp_retry = 0;
-
-#ifdef _MAIN_DEBUG_
-		printf(" - DHCP Client running\r\n");
-#endif
-
-		DHCP_init(SOCK_DHCP, TX_BUF);
-		reg_dhcp_cbfunc(w5500_dhcp_assign, w5500_dhcp_assign, w5500_dhcp_conflict);
-
-		while(1)
-		{
-			ret = DHCP_run();
-
-			if(ret == DHCP_IP_LEASED)
-			{
-#ifdef _MAIN_DEBUG_
-				printf(" - DHCP Success: DHCP Leased time : %ld Sec.\r\n\r\n", getDHCPLeasetime());
-#endif
-				break;
-			}
-			else if(ret == DHCP_FAILED)
-			{
-				dhcp_retry++;
-#ifdef _MAIN_DEBUG_
-				if(dhcp_retry <= 3) printf(" - DHCP Timeout occurred and retry [%d]\r\n", dhcp_retry);
-#endif
-			}
-
-			if(dhcp_retry > 3)
-			{
-#ifdef _MAIN_DEBUG_
-				printf(" - DHCP Failed\r\n\r\n");
-#endif
-				value->options.dhcp_use = 0;
-				Net_Conf();
-				break;
-			}
-
-			do_udp_config(SOCK_CONFIG);
-		}
-	}
-	else 								// Static
-	{
-		Net_Conf();
-	}
+//	// Initialize Network Information
+//	if(value->options.dhcp_use)		// DHCP
+//	{
+//		uint32_t ret;
+//		uint8_t dhcp_retry = 0;
+//
+//#ifdef _MAIN_DEBUG_
+//		printf(" - DHCP Client running\r\n");
+//#endif
+//
+//		DHCP_init(SOCK_DHCP, TX_BUF);
+//		reg_dhcp_cbfunc(w5500_dhcp_assign, w5500_dhcp_assign, w5500_dhcp_conflict);
+//
+//		while(1)
+//		{
+//			ret = DHCP_run();
+//
+//			if(ret == DHCP_IP_LEASED)
+//			{
+//#ifdef _MAIN_DEBUG_
+//				printf(" - DHCP Success: DHCP Leased time : %ld Sec.\r\n\r\n", getDHCPLeasetime());
+//#endif
+//				break;
+//			}
+//			else if(ret == DHCP_FAILED)
+//			{
+//				dhcp_retry++;
+//#ifdef _MAIN_DEBUG_
+//				if(dhcp_retry <= 3) printf(" - DHCP Timeout occurred and retry [%d]\r\n", dhcp_retry);
+//#endif
+//			}
+//
+//			if(dhcp_retry > 3)
+//			{
+//#ifdef _MAIN_DEBUG_
+//				printf(" - DHCP Failed\r\n\r\n");
+//#endif
+//				value->options.dhcp_use = 0;
+//				Net_Conf();
+//				break;
+//			}
+//
+//			do_udp_config(SOCK_CONFIG);
+//		}
+//	}
+//	else 								// Static
+//	{
+//		Net_Conf();
+//	}
 
 #ifdef _MAIN_DEBUG_
 	display_Net_Info();
@@ -226,14 +236,15 @@ int main(void)
 
 #if defined(F_SPI_FLASH)
 	ret = flash_mount();
-#endif
+
 	if(ret > 0)
 	{
 		LED_On(LED2);
 #ifdef _MAIN_DEBUG_
-		display_SDcard_Info(ret);
+		sd_displayCardInfo(ret);
 #endif
 	}
+#endif
 
 #ifdef _USE_SDCARD_
 	// SD card Initialization
@@ -250,7 +261,7 @@ int main(void)
 	{
 		LED_On(LED1);
 #ifdef _MAIN_DEBUG_
-		display_SDcard_Info(ret);
+		sd_displayCardInfo(ret);
 #endif
 	}
 
@@ -272,7 +283,7 @@ int main(void)
 	DataFlash_Init(); // DF CS Init
 #endif
 
-	atc_init();
+//	atc_init();
 
 	httpServer_init(TX_BUF, RX_BUF, MAX_HTTPSOCK, socknumlist);
 
@@ -282,7 +293,7 @@ int main(void)
 #else
 	reg_httpServer_cbfunc(NVIC_SystemReset, NULL); // Callback: STM32 MCU Reset
 #endif
-	IO_status_init();
+//	IO_status_init();
 
 #if defined(F_APP_FTP)
 	ctlnetwork(CN_GET_NETINFO, (void*) &gWIZNETINFO);
@@ -301,10 +312,11 @@ int main(void)
 		IWDG_ReloadCounter(); // Feed IWDG
 #endif
 
-		do_udp_config(SOCK_CONFIG);				// Configuration tool handler
-		atc_run();								// AT Command handler
+//		do_udp_config(SOCK_CONFIG);				// Configuration tool handler
+//		atc_run();								// AT Command handler
 
-		if(value->options.dhcp_use)	DHCP_run();	// DHCP client handler
+//		if(value->options.dhcp_use)
+//			DHCP_run();	// DHCP client handler
 
 #if defined(FACTORY_FW)
 		factory_run();
@@ -317,7 +329,8 @@ int main(void)
 		sflash_run();
 #endif
 
-		for(i = 0; i < MAX_HTTPSOCK; i++)	httpServer_run(i);	// HTTP server handler
+		for(i = 0; i < MAX_HTTPSOCK; i++)
+			httpServer_run(i);	// HTTP server handler
 
 #if defined(F_APP_FTP)
 		ftpd_run(FTP_DBUF);
@@ -328,31 +341,30 @@ int main(void)
 	} // End of main routine
 }
 
-#ifdef _USE_SDCARD_
-static void display_SDcard_Info(uint8_t mount_ret)
-{
-	uint32_t totalSize = 0, availableSize = 0;
 
-	printf("\r\n - Storage mount succeed\r\n");
-	printf(" - Type : ");
-
-	switch(mount_ret)
-	{
-		case CARD_MMC: printf("MMC\r\n"); 	break;
-		case CARD_SD: printf("SD\r\n"); 	break;
-		case CARD_SD2: printf("SD2\r\n"); 	break;
-		case CARD_SDHC: printf("SDHC\r\n"); break;
-		case SPI_FLASHM: printf("sFlash\r\n"); break;
-		default: printf("\r\n"); 	break;
-	}
-
-#if 1
-	if(_MAX_SS == 512)
-	{
-		sd_getMountedMemorySize(mount_ret, &totalSize, &availableSize);
-		printf(" - Available Memory Size : %ld kB / %ld kB ( %ld kB is used )\r\n", availableSize, totalSize, (totalSize - availableSize));
-	}
-	printf("\r\n");
-#endif
+/* wizchip netconf */
+void network_config(void){
+	ctlnetwork(CN_SET_NETINFO, (void*) &gWIZNETINFO);
 }
-#endif
+
+void network_display(void){
+	uint8_t tmpstr[6] = {0,};
+
+	ctlnetwork(CN_GET_NETINFO, (void*) &gWIZNETINFO);
+
+	// Display Network Information
+	ctlwizchip(CW_GET_ID, (void*)tmpstr);
+
+	if(gWIZNETINFO.dhcp == NETINFO_DHCP)
+		printf("\r\n===== %s NET CONF : DHCP =====\r\n",(char*)tmpstr);
+	else
+		printf("\r\n===== %s NET CONF : Static =====\r\n",(char*)tmpstr);
+	ctlwizchip(CN_GET_NETINFO, (void*) &gWIZNETINFO);
+	printf(" MAC : %02X:%02X:%02X:%02X:%02X:%02X\r\n", gWIZNETINFO.mac[0], gWIZNETINFO.mac[1], gWIZNETINFO.mac[2], gWIZNETINFO.mac[3], gWIZNETINFO.mac[4], gWIZNETINFO.mac[5]);
+	printf(" IP : %d.%d.%d.%d\r\n", gWIZNETINFO.ip[0], gWIZNETINFO.ip[1], gWIZNETINFO.ip[2], gWIZNETINFO.ip[3]);
+	printf(" GW : %d.%d.%d.%d\r\n", gWIZNETINFO.gw[0], gWIZNETINFO.gw[1], gWIZNETINFO.gw[2], gWIZNETINFO.gw[3]);
+	printf(" SN : %d.%d.%d.%d\r\n", gWIZNETINFO.sn[0], gWIZNETINFO.sn[1], gWIZNETINFO.sn[2], gWIZNETINFO.sn[3]);
+	printf("=======================================\r\n");
+}
+
+

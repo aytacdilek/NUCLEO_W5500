@@ -8,7 +8,7 @@
 #ifndef	__HTTPSERVER_H__
 #define	__HTTPSERVER_H__
 
-//#define _HTTPSERVER_DEBUG_
+#define _HTTPSERVER_DEBUG_
 
 #define INITIAL_WEBPAGE				"index.html"
 #define M_INITIAL_WEBPAGE			"m/index.html"
@@ -21,7 +21,7 @@
 #endif
 
 /* Watchdog timer */
-#define _USE_WATCHDOG_
+//#define _USE_WATCHDOG_
 
 /*********************************************
 * HTTP Process states list

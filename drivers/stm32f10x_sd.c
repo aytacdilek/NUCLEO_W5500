@@ -367,6 +367,40 @@ uint64_t sd_getAvailableMemorySize(void){
 }
 
 
+
+void sd_displayCardInfo(uint8_t mount_ret){
+	uint32_t totalSize = 0, availableSize = 0;
+
+	printf("\r\n - Storage mount succeed\r\n");
+	printf(" - Type : ");
+
+	switch(mount_ret)
+	{
+		case CARD_MMC:
+			printf("MMC\r\n"); 	break;
+		case CARD_SD:
+			printf("SD\r\n"); 	break;
+		case CARD_SD2:
+			printf("SD2\r\n"); 	break;
+		case CARD_SDHC:
+			printf("SDHC\r\n"); break;
+		case SPI_FLASHM:
+			printf("sFlash\r\n"); break;
+		default:
+			printf("\r\n"); 	break;
+	}
+
+#if 1
+	if(_MAX_SS == 512)
+	{
+		sd_getMountedMemorySize(mount_ret, &totalSize, &availableSize);
+		printf(" - Available Memory Size : %d kB / %d kB ( %d kB is used )\r\n", availableSize, totalSize, (totalSize - availableSize));
+	}
+	printf("\r\n");
+#endif
+}
+
+
 // Wait for response to SD card
 // Response: to get the feedback value
 // Return value: 0, success has been the value of the response
@@ -1095,7 +1129,7 @@ MemoryType_Enum mmc_mount(void)
 	}
 	else
 	{
-		res = f_mount(&Fatfs[0], "1:", 0);
+		res = f_mount(&Fatfs[0],"1:",0);
 #if defined(_FS_DEBUG_)
 	    printf("f_mount:%d\r\n", res);
 #endif

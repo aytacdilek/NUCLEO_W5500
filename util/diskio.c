@@ -11,7 +11,7 @@
 //#include "hw_config.h"
 
 #include "diskio.h"
-#include "mmc_sd.h"
+#include "stm32f10x_sd.h"
 #include "stm32f10x_sd.h"
 #include "dataflash.h"
 #include "ffconf.h"

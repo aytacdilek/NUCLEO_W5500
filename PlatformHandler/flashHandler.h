@@ -4,7 +4,7 @@
 
 #include "stm32f10x_conf.h"
 
-#define MULTIFLASH_ENABLE
+//#define MULTIFLASH_ENABLE
 
 #define FLASH_PAGE0_BASE	0x08000000
 #define FLASH_CONFIG_PAGE	3
