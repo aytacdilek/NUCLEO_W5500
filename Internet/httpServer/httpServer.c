@@ -37,7 +37,8 @@ volatile uint32_t httpServer_tick_1s = 0;
 st_http_socket HTTPSock_Status[_WIZCHIP_SOCK_NUM_] = { {STATE_HTTP_IDLE, }, };
 
 #ifdef	_USE_SDCARD_
-FIL fs;		// FatFs: File object
+FATFS *fatfs;
+FIL file;		// FatFs: File object
 FRESULT fr;	// FatFs: File function return code
 #endif
 
@@ -374,7 +375,7 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef _HTTPSERVER_DEBUG_
-			printf("> HTTPSocket[%d] : HTTP Response body - file len [ %ld ]byte\r\n", s, file_len);
+			printf("> HTTPSocket[%d] : HTTP Response body - file len [ %d ]byte\r\n", s, file_len);
 #endif
 		}
 		else
@@ -383,7 +384,7 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 			send_len = file_len;
 
 #ifdef _HTTPSERVER_DEBUG_
-			printf("> HTTPSocket[%d] : HTTP Response end - file len [ %ld ]byte\r\n", s, send_len);
+			printf("> HTTPSocket[%d] : HTTP Response end - file len [ %d ]byte\r\n", s, send_len);
 #endif
 		}
 #ifdef _USE_FLASH_
@@ -405,20 +406,20 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 		else
 		{
 #ifdef _HTTPSERVER_DEBUG_
-			printf("> HTTPSocket[%d] : HTTP Response end - file len [ %ld ]byte\r\n", s, HTTPSock_Status[get_seqnum].file_len);
+			printf("> HTTPSocket[%d] : HTTP Response end - file len [ %d ]byte\r\n", s, HTTPSock_Status[get_seqnum].file_len);
 #endif
 			// Send process end
 			flag_datasend_end = 1;
 		}
 #ifdef _HTTPSERVER_DEBUG_
-			printf("> HTTPSocket[%d] : HTTP Response body - send len [ %ld ]byte\r\n", s, send_len);
+			printf("> HTTPSocket[%d] : HTTP Response body - send len [ %d ]byte\r\n", s, send_len);
 #endif
 
 // ## 20141219 Eric added, for 'File object structure' (fs) allocation reduced (8 -> 1)
 #ifdef _USE_SDCARD_
-			if((fr = f_open(&fs, (const char *)HTTPSock_Status[get_seqnum].file_name, FA_READ)) == 0)
+			if((fr = f_open(&file, (const char *)HTTPSock_Status[get_seqnum].file_name, FA_READ)) == 0)
 			{
-				f_lseek(&fs, HTTPSock_Status[get_seqnum].file_offset);
+				f_lseek(&file, HTTPSock_Status[get_seqnum].file_offset);
 			}
 			else
 			{
@@ -433,7 +434,7 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 
 #ifdef _USE_SDCARD_
 	// Data read from SD Card
-	fr = f_read(&fs, &buf[0], send_len, (void *)&blocklen);
+	fr = f_read(&file, &buf[0], send_len, (void *)&blocklen);
 	if(fr != FR_OK)
 	{
 		send_len = 0;
@@ -453,7 +454,7 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 
 	// Requested content send to HTTP client
 #ifdef _HTTPSERVER_DEBUG_
-	printf("> HTTPSocket[%d] : [Send] HTTP Response body [ %ld ]byte\r\n", s, send_len);
+	printf("> HTTPSocket[%d] : [Send] HTTP Response body [ %d ]byte\r\n", s, send_len);
 #endif
 
 	if(send_len) send(s, buf, send_len);
@@ -470,13 +471,13 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 	{
 		HTTPSock_Status[get_seqnum].file_offset += send_len;
 #ifdef _HTTPSERVER_DEBUG_
-		printf("> HTTPSocket[%d] : HTTP Response body - offset [ %ld ]\r\n", s, HTTPSock_Status[get_seqnum].file_offset);
+		printf("> HTTPSocket[%d] : HTTP Response body - offset [ %d ]\r\n", s, HTTPSock_Status[get_seqnum].file_offset);
 #endif
 	}
 
 // ## 20141219 Eric added, for 'File object structure' (fs) allocation reduced (8 -> 1)
 #ifdef _USE_SDCARD_
-	f_close(&fs);
+	f_close(&file);
 #endif
 // ## 20141219 added end
 }
@@ -512,10 +513,11 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 	uint8_t * uri_name;
 	uint32_t content_addr = 0;
 	uint32_t file_len = 0;
+	FATFS *fatfs;				/* File system specific */
 
 	uint8_t post_name[32]={0x00,};	// POST method request file name
-
 	uint8_t uri_buf[MAX_URI_SIZE]={0x00, };
+
 #ifdef _WILL_BE_IM_
 	uint32_t content_len = 0;
 	uint16_t post_len = 0; 			// POST
@@ -548,9 +550,12 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 				break;
 			}
 			uri_name = uri_buf;
-			if (!strcmp((char *)uri_name, "/")) strcpy((char *)uri_name, INITIAL_WEBPAGE);	// If URI is "/", respond by index.html
-			if (!strcmp((char *)uri_name, "m")) strcpy((char *)uri_name, M_INITIAL_WEBPAGE);
-			if (!strcmp((char *)uri_name, "mobile")) strcpy((char *)uri_name, MOBILE_INITIAL_WEBPAGE);
+			if (!strcmp((char *)uri_name, "/"))
+				strcpy((char *)uri_name, INITIAL_WEBPAGE);	// If URI is "/", respond by index.html
+			if (!strcmp((char *)uri_name, "m"))
+				strcpy((char *)uri_name, M_INITIAL_WEBPAGE);
+			if (!strcmp((char *)uri_name, "mobile"))
+				strcpy((char *)uri_name, MOBILE_INITIAL_WEBPAGE);
 			find_http_uri_type(&p_http_request->TYPE, uri_name);	// Checking requested file types (HTML, TEXT, GIF, JPEG and Etc. are included)
 
 #ifdef _HTTPSERVER_DEBUG_
@@ -577,12 +582,20 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 #ifdef _HTTPSERVER_DEBUG_
 				printf("\r\n> HTTPSocket[%d] : Searching the requested content\r\n", s);
 #endif
-				if((fr = f_open(&fs, (const char *)uri_name, FA_READ)) == 0)
+				disk_initialize(0);
+
+				if (f_mount(0, fatfs) != FR_OK){
+					/* Error.No micro-SD with FAT32 is present */
+					printf("Error.No micro-SD with FAT32 is present\r\n");
+					while(1);
+				}
+				fr = f_open(&file, (const char *)uri_name, FA_READ);
+				if(fr == 0)
 				{
 					content_found = 1; // file open succeed
 
-					file_len = fs.fsize;
-					content_addr = fs.org_clust;
+					file_len = file.fsize;
+					content_addr = file.org_clust;
 				}
 				else
 				{
@@ -602,7 +615,7 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 				else
 				{
 #ifdef _HTTPSERVER_DEBUG_
-					printf("> HTTPSocket[%d] : Find Content [%s] ok - Start [%ld] len [ %ld ]byte\r\n", s, uri_name, content_addr, file_len);
+					printf("> HTTPSocket[%d] : Find Content [%s] ok - Start [%d] len [ %d ]byte\r\n", s, uri_name, content_addr, file_len);
 #endif
 					http_status = STATUS_OK;
 				}
@@ -611,7 +624,7 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 				if(http_status)
 				{
 #ifdef _HTTPSERVER_DEBUG_
-					printf("> HTTPSocket[%d] : Requested content len = [ %ld ]byte\r\n", s, file_len);
+					printf("> HTTPSocket[%d] : Requested content len = [ %d ]byte\r\n", s, file_len);
 #endif
 					send_http_response_header(s, p_http_request->TYPE, file_len, http_status);
 				}
@@ -639,7 +652,7 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 			{
 				content_found = http_post_cgi_handler(post_name, p_http_request, http_response, &file_len);
 #ifdef _HTTPSERVER_DEBUG_
-				printf("> HTTPSocket[%d] : [CGI: %s] / Response len [ %ld ]byte\r\n", s, content_found?"Content found":"Content not found", file_len);
+				printf("> HTTPSocket[%d] : [CGI: %s] / Response len [ %d ]byte\r\n", s, content_found?"Content found":"Content not found", file_len);
 #endif
 				if(content_found && (file_len <= (2048-(strlen(RES_CGIHEAD_OK)+8))))
 				{

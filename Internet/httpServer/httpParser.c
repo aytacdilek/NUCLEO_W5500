@@ -23,8 +23,7 @@ static uint8_t C2D(uint8_t c); 												/* Convert a character to HEX */
  @brief	convert escape characters(%XX) to ASCII character
  */ 
 void unescape_http_url(
-	char * url	/**< pointer to be converted ( escape characters )*/
-	)
+	char * url)	/**< pointer to be converted ( escape characters )*/
 {
 	int x, y;
 
@@ -44,25 +43,36 @@ void unescape_http_url(
 void make_http_response_head(
 	char * buf, 	/**< pointer to response header to be made */
 	char type, 	/**< response type */
-	uint32_t len	/**< size of response header */
-	)
+	uint32_t len)	/**< size of response header */
 {
 	char * head;
 	char tmp[10];
 			
 	/*  file type*/
-	if 	(type == PTYPE_HTML) 		head = RES_HTMLHEAD_OK;
-	else if (type == PTYPE_GIF)		head = RES_GIFHEAD_OK;
-	else if (type == PTYPE_TEXT)	head = RES_TEXTHEAD_OK;
-	else if (type == PTYPE_JPEG)	head = RES_JPEGHEAD_OK;
-	else if (type == PTYPE_FLASH)	head = RES_FLASHHEAD_OK;
-	else if (type == PTYPE_XML) 	head =  RES_XMLHEAD_OK;
-	else if (type == PTYPE_CSS) 	head = RES_CSSHEAD_OK;
-	else if (type == PTYPE_JSON)	head = RES_JSONHEAD_OK;
-	else if (type == PTYPE_JS)		head = RES_JSHEAD_OK;
-	else if (type == PTYPE_CGI)		head = RES_CGIHEAD_OK;
-	else if (type == PTYPE_PNG)		head = RES_PNGHEAD_OK;
-	else if (type == PTYPE_ICO)		head = RES_ICOHEAD_OK;
+	if 	(type == PTYPE_HTML)
+		head = RES_HTMLHEAD_OK;
+	else if (type == PTYPE_GIF)
+		head = RES_GIFHEAD_OK;
+	else if (type == PTYPE_TEXT)
+		head = RES_TEXTHEAD_OK;
+	else if (type == PTYPE_JPEG)
+		head = RES_JPEGHEAD_OK;
+	else if (type == PTYPE_FLASH)
+		head = RES_FLASHHEAD_OK;
+	else if (type == PTYPE_XML)
+		head =  RES_XMLHEAD_OK;
+	else if (type == PTYPE_CSS)
+		head = RES_CSSHEAD_OK;
+	else if (type == PTYPE_JSON)
+		head = RES_JSONHEAD_OK;
+	else if (type == PTYPE_JS)
+		head = RES_JSHEAD_OK;
+	else if (type == PTYPE_CGI)
+		head = RES_CGIHEAD_OK;
+	else if (type == PTYPE_PNG)
+		head = RES_PNGHEAD_OK;
+	else if (type == PTYPE_ICO)
+		head = RES_ICOHEAD_OK;
 #ifdef _HTTPPARSER_DEBUG_
 	else
 	{

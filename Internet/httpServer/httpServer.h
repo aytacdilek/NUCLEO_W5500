@@ -10,9 +10,9 @@
 
 #define _HTTPSERVER_DEBUG_
 
-#define INITIAL_WEBPAGE				"index.html"
-#define M_INITIAL_WEBPAGE			"m/index.html"
-#define MOBILE_INITIAL_WEBPAGE		"mobile/index.html"
+#define INITIAL_WEBPAGE				"index.htm"
+#define M_INITIAL_WEBPAGE			"m/index.htm"
+#define MOBILE_INITIAL_WEBPAGE		"mobile/index.htm"
 
 /* Web Server Content Storage Select */
 #define _USE_SDCARD_

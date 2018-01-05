@@ -893,6 +893,26 @@ void microsd_test(void){
 		printf("Error. Cannot close the file\r\n");
 		while(1);
 	}
+
+	/* Step8 */
+	/* Open the file for read */
+	printf("Step 8: Opening file to read\r\n");
+	res = f_open(&fsrc, "logfile.txt",  FA_READ);
+	if (res != FR_OK){
+		/* Error. Cannot open the file */
+		printf("Error. Cannot open the file\r\n");
+		while(1);
+	}
+
+	/* Step11 */
+	/* Close the file */
+	printf("Step 11: Closing the file\r\n");
+	res = f_close(&fsrc);
+	if (res != FR_OK){
+		/* Error. Cannot close the file */
+		printf("Error. Cannot close the file\r\n");
+		while(1);
+	}
 }
 
 

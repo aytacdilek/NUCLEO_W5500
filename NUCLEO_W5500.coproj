@@ -33,7 +33,7 @@
           <Memory name="IROM2" type="ReadOnly" size="" startValue=""/>
           <Memory name="IRAM2" type="ReadWrite" size="" startValue=""/>
         </MemoryAreas>
-        <LocateLinkFile path="c:/coocox/coide/configuration/programdata/nucleo_w5500/link.ld" type="0"/>
+        <LocateLinkFile path="c:/coocox/coide/configuration/programdata/nucleo_w5500/arm-gcc-link.ld" type="0"/>
       </Link>
       <Output>
         <Option name="OutputFileType" value="0"/>
@@ -114,8 +114,8 @@
     <File name="syscalls/syscalls.c" path="syscalls/syscalls.c" type="1"/>
     <File name="drivers/fatfs/integer.h" path="drivers/FATFS/integer.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_spi.h" path="stm_lib/inc/stm32f10x_spi.h" type="1"/>
-    <File name="stm_lib/src/stm32f10x_adc.c" path="stm_lib/src/stm32f10x_adc.c" type="1"/>
     <File name="stm_lib/inc/stm32f10x_dma.h" path="stm_lib/inc/stm32f10x_dma.h" type="1"/>
+    <File name="stm_lib/src/stm32f10x_adc.c" path="stm_lib/src/stm32f10x_adc.c" type="1"/>
     <File name="ATcmd/library" path="" type="2"/>
     <File name="stm_lib/inc/stm32f10x_iwdg.h" path="stm_lib/inc/stm32f10x_iwdg.h" type="1"/>
     <File name="drivers/fatfs" path="" type="2"/>
@@ -135,11 +135,11 @@
     <File name="stm_lib/inc/misc.h" path="stm_lib/inc/misc.h" type="1"/>
     <File name="stdio" path="" type="2"/>
     <File name="PlatformHandler/rccHandler.c" path="PlatformHandler/rccHandler.c" type="1"/>
+    <File name="PlatformHandler/flashHandler.h" path="PlatformHandler/flashHandler.h" type="1"/>
     <File name="ATcmd/wiz_types.h" path="ATcmd/wiz_types.h" type="1"/>
     <File name="PlatformHandler/adcHandler.h" path="PlatformHandler/adcHandler.h" type="1"/>
-    <File name="PlatformHandler/flashHandler.h" path="PlatformHandler/flashHandler.h" type="1"/>
-    <File name="util" path="" type="2"/>
     <File name="cmsis/core_cmInstr.h" path="cmsis/core_cmInstr.h" type="1"/>
+    <File name="util" path="" type="2"/>
     <File name="Internet/DHCP/dhcp.c" path="Internet/DHCP/dhcp.c" type="1"/>
     <File name="ATcmd/atcmd.h" path="ATcmd/atcmd.h" type="1"/>
     <File name="bsp/stm32f10x_bsp_spi.c" path="bsp/stm32f10x_bsp_spi.c" type="1"/>
@@ -152,38 +152,38 @@
     <File name="ATcmd/library/util.h" path="ATcmd/library/util.h" type="1"/>
     <File name="Internet" path="" type="2"/>
     <File name="stm_lib/src/stm32f10x_dma.c" path="stm_lib/src/stm32f10x_dma.c" type="1"/>
-    <File name="PlatformHandler/i2cHandler.c" path="PlatformHandler/i2cHandler.c" type="1"/>
     <File name="stm_lib/src" path="" type="2"/>
+    <File name="PlatformHandler/i2cHandler.c" path="PlatformHandler/i2cHandler.c" type="1"/>
     <File name="Internet/httpServer/httpUtil.h" path="Internet/httpServer/httpUtil.h" type="1"/>
     <File name="cmsis" path="" type="2"/>
-    <File name="bsp/stm32f10x_bsp_delay.c" path="bsp/stm32f10x_bsp_delay.c" type="1"/>
-    <File name="stm_lib" path="" type="2"/>
     <File name="ATcmd/atcmd.c" path="ATcmd/atcmd.c" type="1"/>
-    <File name="PlatformHandler/i2cHandler.h" path="PlatformHandler/i2cHandler.h" type="1"/>
+    <File name="stm_lib" path="" type="2"/>
+    <File name="bsp/stm32f10x_bsp_delay.c" path="bsp/stm32f10x_bsp_delay.c" type="1"/>
     <File name="stm_lib/inc/stm32f10x_exti.h" path="stm_lib/inc/stm32f10x_exti.h" type="1"/>
+    <File name="PlatformHandler/i2cHandler.h" path="PlatformHandler/i2cHandler.h" type="1"/>
     <File name="drivers/fatfs/ff.h" path="drivers/FATFS/ff.h" type="1"/>
     <File name="PlatformHandler/storageHandler.h" path="PlatformHandler/storageHandler.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_adc.h" path="stm_lib/inc/stm32f10x_adc.h" type="1"/>
     <File name="cmsis_boot/system_stm32f10x.h" path="cmsis_boot/system_stm32f10x.h" type="1"/>
     <File name="ATcmd/library/util.c" path="ATcmd/library/util.c" type="1"/>
     <File name="PlatformHandler/extiHandler.c" path="PlatformHandler/extiHandler.c" type="1"/>
-    <File name="stm_lib/src/stm32f10x_crc.c" path="stm_lib/src/stm32f10x_crc.c" type="1"/>
     <File name="Internet/DHCP/dhcp.h" path="Internet/DHCP/dhcp.h" type="1"/>
+    <File name="stm_lib/src/stm32f10x_crc.c" path="stm_lib/src/stm32f10x_crc.c" type="1"/>
     <File name="stm_lib/src/stm32f10x_i2c.c" path="stm_lib/src/stm32f10x_i2c.c" type="1"/>
     <File name="PlatformHandler/uartHandler.h" path="PlatformHandler/uartHandler.h" type="1"/>
     <File name="ATcmd" path="" type="2"/>
-    <File name="stm_lib/src/stm32f10x_rtc.c" path="stm_lib/src/stm32f10x_rtc.c" type="1"/>
     <File name="Internet/httpServer/httpServer.h" path="Internet/httpServer/httpServer.h" type="1"/>
+    <File name="stm_lib/src/stm32f10x_rtc.c" path="stm_lib/src/stm32f10x_rtc.c" type="1"/>
     <File name="main.c" path="main.c" type="1"/>
     <File name="drivers/stm32f10x_w5500.c" path="drivers/stm32f10x_w5500.c" type="1"/>
     <File name="PlatformHandler/rccHandler.h" path="PlatformHandler/rccHandler.h" type="1"/>
     <File name="PlatformHandler/uartHandler.c" path="PlatformHandler/uartHandler.c" type="1"/>
-    <File name="ATcmd/cmdrun.c" path="ATcmd/cmdrun.c" type="1"/>
     <File name="PlatformHandler/adcHandler.c" path="PlatformHandler/adcHandler.c" type="1"/>
+    <File name="ATcmd/cmdrun.c" path="ATcmd/cmdrun.c" type="1"/>
     <File name="Internet/httpServer/httpParser.c" path="Internet/httpServer/httpParser.c" type="1"/>
-    <File name="util/types.h" path="util/types.h" type="1"/>
-    <File name="Internet/httpServer" path="" type="2"/>
     <File name="stm_lib/inc/stm32f10x_tim.h" path="stm_lib/inc/stm32f10x_tim.h" type="1"/>
+    <File name="Internet/httpServer" path="" type="2"/>
+    <File name="util/types.h" path="util/types.h" type="1"/>
     <File name="cmsis_boot" path="" type="2"/>
     <File name="callback" path="" type="2"/>
     <File name="PlatformHandler/userHandler.h" path="PlatformHandler/userHandler.h" type="1"/>
@@ -191,8 +191,8 @@
     <File name="stm_lib/src/stm32f10x_tim.c" path="stm_lib/src/stm32f10x_tim.c" type="1"/>
     <File name="cmsis_boot/startup" path="" type="2"/>
     <File name="drivers/stm32f10x_sd.h" path="drivers/stm32f10x_sd.h" type="1"/>
-    <File name="stm_lib/src/stm32f10x_spi.c" path="stm_lib/src/stm32f10x_spi.c" type="1"/>
     <File name="stm_lib/src/stm32f10x_iwdg.c" path="stm_lib/src/stm32f10x_iwdg.c" type="1"/>
+    <File name="stm_lib/src/stm32f10x_spi.c" path="stm_lib/src/stm32f10x_spi.c" type="1"/>
     <File name="Internet/FTPServer/ftpd.c" path="Internet/FTPServer/ftpd.c" type="1"/>
     <File name="PlatformHandler/timerHandler.c" path="PlatformHandler/timerHandler.c" type="1"/>
     <File name="Internet/FTPServer" path="" type="2"/>
@@ -209,15 +209,15 @@
     <File name="PlatformHandler/eepromHandler.h" path="PlatformHandler/eepromHandler.h" type="1"/>
     <File name="stm_lib/src/stm32f10x_pwr.c" path="stm_lib/src/stm32f10x_pwr.c" type="1"/>
     <File name="drivers/fatfs/diskio.c" path="drivers/FATFS/diskio.c" type="1"/>
-    <File name="stm_lib/inc/stm32f10x_gpio.h" path="stm_lib/inc/stm32f10x_gpio.h" type="1"/>
     <File name="stm32f10x_it.h" path="stm32f10x_it.h" type="1"/>
+    <File name="stm_lib/inc/stm32f10x_gpio.h" path="stm_lib/inc/stm32f10x_gpio.h" type="1"/>
     <File name="Internet/httpServer/httpParser.h" path="Internet/httpServer/httpParser.h" type="1"/>
     <File name="Internet/DHCP" path="" type="2"/>
     <File name="Internet/DNS/dns.h" path="Internet/DNS/dns.h" type="1"/>
+    <File name="drivers/stm32f10x_sd.c" path="drivers/stm32f10x_sd.c" type="1"/>
     <File name="netutil/netutil.h" path="netutil/netutil.h" type="1"/>
     <File name="Internet/DNS" path="" type="2"/>
     <File name="Ethernet/wizchip_conf.h" path="Ethernet/wizchip_conf.h" type="1"/>
-    <File name="drivers/stm32f10x_sd.c" path="drivers/stm32f10x_sd.c" type="1"/>
     <File name="cmsis/core_cm3.h" path="cmsis/core_cm3.h" type="1"/>
     <File name="stm_lib/src/stm32f10x_exti.c" path="stm_lib/src/stm32f10x_exti.c" type="1"/>
     <File name="PlatformHandler/timerHandler.h" path="PlatformHandler/timerHandler.h" type="1"/>
@@ -232,26 +232,26 @@
     <File name="Ethernet/socket.c" path="Ethernet/socket.c" type="1"/>
     <File name="Configuration" path="" type="2"/>
     <File name="PlatformHandler/gpioHandler.h" path="PlatformHandler/gpioHandler.h" type="1"/>
-    <File name="Ethernet/W5500" path="" type="2"/>
     <File name="stm_lib/src/stm32f10x_flash.c" path="stm_lib/src/stm32f10x_flash.c" type="1"/>
+    <File name="Ethernet/W5500" path="" type="2"/>
     <File name="PlatformHandler" path="" type="2"/>
     <File name="stm_lib/inc/stm32f10x_rcc.h" path="stm_lib/inc/stm32f10x_rcc.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_i2c.h" path="stm_lib/inc/stm32f10x_i2c.h" type="1"/>
     <File name="syscalls" path="" type="2"/>
-    <File name="netutil/netutil.c" path="netutil/netutil.c" type="1"/>
     <File name="Ethernet/W5500/w5500.c" path="Ethernet/W5500/w5500.c" type="1"/>
+    <File name="netutil/netutil.c" path="netutil/netutil.c" type="1"/>
     <File name="Ethernet/wizchip_conf.c" path="Ethernet/wizchip_conf.c" type="1"/>
     <File name="Internet/FTPServer/ftpd.h" path="Internet/FTPServer/ftpd.h" type="1"/>
     <File name="Internet/httpServer/httpServer.c" path="Internet/httpServer/httpServer.c" type="1"/>
+    <File name="Internet/httpServer/httpUtil.c" path="Internet/httpServer/httpUtil.c" type="1"/>
     <File name="bsp/stm32f10x_bsp_usart2.h" path="bsp/stm32f10x_bsp_usart2.h" type="1"/>
     <File name="PlatformHandler/ring_buffer.h" path="PlatformHandler/ring_buffer.h" type="1"/>
-    <File name="Internet/httpServer/httpUtil.c" path="Internet/httpServer/httpUtil.c" type="1"/>
     <File name="Internet/DNS/dns.c" path="Internet/DNS/dns.c" type="1"/>
-    <File name="stm_lib/inc" path="" type="2"/>
     <File name="stm_lib/src/stm32f10x_can.c" path="stm_lib/src/stm32f10x_can.c" type="1"/>
-    <File name="stm_lib/inc/stm32f10x_crc.h" path="stm_lib/inc/stm32f10x_crc.h" type="1"/>
-    <File name="Ethernet" path="" type="2"/>
+    <File name="stm_lib/inc" path="" type="2"/>
     <File name="util/boardutil.h" path="util/boardutil.h" type="1"/>
+    <File name="Ethernet" path="" type="2"/>
+    <File name="stm_lib/inc/stm32f10x_crc.h" path="stm_lib/inc/stm32f10x_crc.h" type="1"/>
     <File name="stm_lib/inc/stm32f10x_wwdg.h" path="stm_lib/inc/stm32f10x_wwdg.h" type="1"/>
   </Files>
 </Project>

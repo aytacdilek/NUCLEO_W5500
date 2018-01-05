@@ -105,7 +105,7 @@ wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef},
 void network_config(void);
 void network_display(void);
 
-FATFS fatfs;				/* File system specific */
+FATFS *fatfs;				/* File system specific */
 
 /*****************************************************************************
  * Public functions
@@ -162,6 +162,8 @@ int main(void)
 //	USART1_Configuration();
 //	USART2_Configuration();
 	usart2_init();
+
+	microsd_test();
 
 	// W5500 Initialization
 	w5500_init();
@@ -280,7 +282,7 @@ int main(void)
 
 	/* Step3 */
 	/* Initialize filesystem */
-	if (f_mount(0, &fatfs) != FR_OK){
+	if (f_mount(0, fatfs) != FR_OK){
 		/* Error.No micro-SD with FAT32 is present */
 		printf("Error.No micro-SD with FAT32 is present\r\n");
 		while(1);
